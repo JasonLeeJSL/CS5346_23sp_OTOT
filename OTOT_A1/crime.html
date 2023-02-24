@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Crime Statistics Of Bangladesh 2010-2019 (Total)</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+  </head>
+  <body>
+    <script>
+      var width = 2000;
+      var height = 1000;
+
+      var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      var projection = d3.geoMercator()
+        .center([90, 24])
+        .scale(6000)
+        .translate([400, 500]);
+
+      var path = d3.geoPath()
+        .projection(projection);
+
+      // Define color scale
+      var colorScale = d3.scaleSequential(d3.interpolateBlues)
+                         .domain([0, 364068])
+                         .range(['#33FF33','#FF3333']);
+
+      // Load GeoJSON data and crime statistics
+      d3.json("bangladesh.geojson").then(function(bangladesh) {
+        d3.json("crime_stats.json").then(function(crimeStats) {
+
+          // Merge GeoJSON data with crime statistics
+          bangladesh.features.forEach(function(feature) {
+            var crimeStat = crimeStats[feature.properties.ADM1_EN];
+            feature.properties.crime_count = crimeStat ? crimeStat : 0;
+          });
+
+          // Add paths for each feature
+          svg.selectAll("path")
+             .data(bangladesh.features)
+             .enter()
+             .append("path")
+             .attr("d", path)
+             .style("fill", function(d) { return colorScale(d.properties.crime_count); })
+             //.style("fill", "#fff")
+             .style("stroke", "#000")
+             .style("stroke-width", "0.2px");
+
+//Add province name
+var text_dhaka = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([90.25, 23.8])[0])
+  .attr("y", projection([90.25, 23.8])[1])
+  .text("Dhaka")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_dhaka_num = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([90.25, 23.65])[0])
+  .attr("y", projection([90.25, 23.65])[1])
+  .text("364068")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Mymensingh = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([90.4, 24.9])[0])
+  .attr("y", projection([90.4, 24.9])[1])
+  .text("Mymensingh")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+        
+var text_Mymensingh_num = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([90.4, 24.75])[0])
+  .attr("y", projection([90.4, 24.75])[1])
+  .text("37830")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Chittagong = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([91.9, 22.85])[0])
+  .attr("y", projection([91.9, 22.85])[1])
+  .text("Chittagong")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+        
+var text_Chittagong_num = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([91.9, 22.7])[0])
+  .attr("y", projection([91.9, 22.7])[1])
+  .text("255132")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Sylhet = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([91.7, 24.8])[0])
+  .attr("y", projection([91.7, 24.8])[1])
+  .text("Sylhet")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+        
+var text_Sylhet_num = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([91.7, 24.65])[0])
+  .attr("y", projection([91.7, 24.65])[1])
+  .text("83528")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Khulna = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([89.4, 22.9])[0])
+  .attr("y", projection([89.4, 22.9])[1])
+  .text("Khulna")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Khulna_num = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([89.4, 22.75])[0])
+  .attr("y", projection([89.4, 22.75])[1])
+  .text("181103")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Barisal = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([90.35, 22.5])[0])
+  .attr("y", projection([90.35, 22.5])[1])
+  .text("Barisal")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Barisal_num = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([90.35, 22.35])[0])
+  .attr("y", projection([90.35, 22.35])[1])
+  .text("91744")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Rajshahi = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([89, 24.65])[0])
+  .attr("y", projection([89, 24.65])[1])
+  .text("Rajshahi")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Rajshahi_num = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([89, 24.5])[0])
+  .attr("y", projection([89, 24.5])[1])
+  .text("226267")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Rangpur = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([89, 25.85])[0])
+  .attr("y", projection([89, 25.85])[1])
+  .text("Rangpur")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+var text_Rangpur_num = svg.append("text")
+  .attr("class", "label")
+  .attr("x", projection([89, 25.7])[0])
+  .attr("y", projection([89, 25.7])[1])
+  .text("226267")
+  .style("font-size", "14px")
+  .style("fill", "white")
+  .style("text-anchor", "middle");
+
+// Add legend
+var gradient = svg.append("defs")
+  .append("linearGradient")
+  .attr("id", "gradient")
+  .attr("x1", "0%")
+  .attr("y1", "0%")
+  .attr("x2", "100%")
+  .attr("y2", "0%");
+
+gradient.append("stop")
+  .attr("offset", "0%")
+  .attr("stop-color", colorScale(0));
+
+gradient.append("stop")
+  .attr("offset", "100%")
+  .attr("stop-color", colorScale(364068));
+
+var legendWidth = 300;
+var legendHeight = 10;
+
+var x = d3.scaleLinear()
+          .domain([0, 364068])
+          .range([0, legendWidth]);
+
+var xAxis = d3.axisBottom(x)
+  .tickSize(legendHeight)
+  .ticks(6);
+
+var legend = svg.append("g")
+  .attr("class", "legend")
+  .attr("transform", "translate(" + ( legendWidth) + "," + (height - legendHeight*3 - 100) + ")");
+
+legend.append("rect")
+  .attr("width", legendWidth)
+  .attr("height", legendHeight)
+  .style("fill", "url(#gradient)");
+
+legend.append("g")
+  .attr("class", "axis")
+  .attr("transform", "translate(0," + legendHeight + ")")
+  .call(xAxis);
+
+//Add title
+var title = svg.append("text")
+  .attr("class", "title")
+  .attr("x", projection([92.5, 26])[0])
+  .attr("y", projection([92.5, 26])[1])
+  .text("Crime Statistics of Bangladesh 2010-2019 (Total Cases)")
+  .style("font-size", "18px")
+  .style("fill", "black")
+  .style("text-anchor", "middle");
+
+// Add pie
+var data = {"Dhaka": {"name":"Dhaka", "count":364068}, "Mymensingh": {"name":"MD", "count":37830}, "Chittagong": {"name":"Chittagong", "count":255132} , "Sylhet": {"name":"Sylhet", "count":83528}, "Khulna":{"name":"Khulna", "count":181103} , "Barisal":{"name":"Barisal", "count":91744} , "Rajshahi": {"name":"Rajshahi", "count":226267}, "Rangpur": {"name":"Rangpur", "count":130149}}
+var total = 1369821;
+var pieData = Object.values(data).map(function(d) {
+  return {
+    name: d.name,
+    count: d.count,
+    percent: d.count/total
+  };
+});
+
+// Define pie and arcs
+var pie = d3.pie()
+  .value(function(d) { return d.count; })
+  .sort(function(a, b) { return d3.descending(a.count, b.count); });
+
+var arc = d3.arc()
+  .innerRadius(50)
+  .outerRadius(180);
+
+// Add pie to svg
+var pieG = d3.select("svg")
+  .append("g")
+  .attr("transform", "translate(950, 600)");
+
+// Draw slices of pie
+var slices = pieG.selectAll(".slice")
+  .data(pie(pieData))
+  .enter()
+  .append("g")
+  .attr("class", "slice");
+
+slices.append("path")
+  .attr("d", arc)
+  .attr("fill", function(d) { return colorScale(d.data.count); });
+
+slices.append("text")
+  .attr("transform", function(d) {
+    var centroid = arc.centroid(d);
+    return "translate(" + centroid[0]*1.75  + "," + centroid[1]*1.75 + ")";
+  })
+  .attr("text-anchor", "middle")
+  .attr("font-size", "15px")
+  .attr("fill", "black")
+  .text(function(d) { return d.data.name + " (" + d3.format(".1%")(d.data.percent) + ")"; })
+  .raise();
+
+
+// Define the data
+var chartdata = [
+  { year: 2010, count: 128716 },
+  { year: 2011, count: 136156 },
+  { year: 2012, count: 149375 },
+  { year: 2013, count: 146928 },
+  { year: 2014, count: 152059 },
+  { year: 2015, count: 148389 },
+  { year: 2016, count: 147650 },
+  { year: 2017, count: 173392 },
+  { year: 2018, count: 173979 }
+];
+
+// Define the margins and dimensions for the chart
+var chartmargin = {top: 300, right: 50, bottom: 300, left: 1300};
+var chartwidth = 1800 - chartmargin.left - chartmargin.right;
+var chartheight = 1000 - chartmargin.top - chartmargin.bottom;
+
+// Create the group element for the chart
+var chart = svg.append("g")
+  .attr("transform", "translate("+ chartmargin.left + "," + chartmargin.top + ")");
+
+// Define the scales and axes for the chart
+var chartxScale = d3.scaleLinear()
+  .domain(d3.extent(chartdata, function(d) { return d.year; }))
+  .range([0, chartwidth]);
+
+var chartyScale = d3.scaleLinear()
+  .domain([100000, d3.max(chartdata, function(d) { return d.count; }) +10000])
+  .range([chartheight, 0]);
+
+var chartxAxis = d3.axisBottom(chartxScale)
+  .tickFormat(d3.format("d"));
+
+var chartyAxis = d3.axisLeft(chartyScale);
+
+// Add the x and y axes to the chart
+chart.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0," + chartheight + ")")
+  .call(chartxAxis);
+
+chart.append("g")
+  .attr("class", "y axis")
+  .call(chartyAxis);
+
+// Add the chart title
+chart.append("text")
+  .attr("class", "title")
+  .attr("x", chartwidth / 2)
+  .attr("y", -20)
+  .text("Bangladesh Crime Statistics 2010-2018")
+  .style("font-size", "18px")
+  .style("fill", "black")
+  .style("text-anchor", "middle");
+
+// Define the line function for the chart
+var chartline = d3.line()
+  .x(function(d) { return chartxScale(d.year); })
+  .y(function(d) { return chartyScale(d.count); });
+
+// Add the line to the chart
+chart.append("path")
+  .datum(chartdata)
+  .attr("class", "line")
+  .attr("fill", "none")
+  .attr("stroke", "red")
+  .attr("d", chartline);
+
+// Add the data points to the chart
+chart.selectAll(".dot")
+  .data(chartdata)
+  .enter().append("circle")
+  .attr("class", "dot")
+  .attr("fill", "#FFCCCC")
+  .attr("stroke", "red")
+  .attr("cx", function(d) { return chartxScale(d.year); })
+  .attr("cy", function(d) { return chartyScale(d.count); })
+  .attr("r", 5);
+
+// Add the axis labels to the chart
+chart.append("text")
+  .attr("class", "axis-label")
+  .attr("text-anchor", "middle")
+  .attr("transform", "translate(" + (-150 / 2) + "," + (chartheight / 2) + ")rotate(-90)")
+  .text("Crime Cases");
+
+chart.append("text")
+  .attr("class", "axis-label")
+  .attr("text-anchor", "middle")
+  .attr("transform", "translate(" + (chartwidth / 2) + "," + (chartheight+40) + ")")
+  .text("Year");
+
+
+// Add the data labels to the chart
+var labels = chart.selectAll(".label")
+  .data(chartdata)
+  .enter()
+  .append("g")
+  .attr("class", "label");
+
+labels.append("text")
+  .attr("class", "value")
+  .text(function(d) { return d.count; })
+  .attr("x", function(d) { return chartxScale(d.year); })
+  .attr("y", function(d) { return chartyScale(d.count); })
+  .attr("dx", "-0.5em")
+  .style("font-size", "10px")
+  .style("fill", "red")
+  .attr("dy", "-1.5em");
+  
+});
+});
+
+    </script>
+  </body>
+</html>
